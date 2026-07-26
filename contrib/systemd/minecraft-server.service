@@ -6,6 +6,7 @@ After=network.target
 User=minecraft
 Group=minecraft
 
+WorkingDirectory=/var/lib/minecraft/deploy/server
 RuntimeDirectory=minecraft-server
 
 Type=forking
