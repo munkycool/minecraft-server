@@ -111,7 +111,7 @@ function download_file() {
 	if [[ ! -f "$cache_path" ]]; then
 		mkdir -p "$(dirname "$cache_path")" # just in case
 		# fetch it
-		wget -q --show-progress "$source_url" -O "$cache_path" || die "$failure_message"
+		curl -fSL -H "User-Agent: $USER_AGENT" --progress-bar "$source_url" -o "$cache_path" || die "$failure_message"
 	else
 		touch -c -a "$cache_path"
 	fi
@@ -299,7 +299,7 @@ function latest_github_release_tag() {
 	local response_body
 	local tag
 
-	response=$(curl -i -s "https://api.github.com/repos/$repo/releases/latest" \
+	response=$(curl -i -s -H "User-Agent: $USER_AGENT" "https://api.github.com/repos/$repo/releases/latest" \
 		--include --header "if-modified-since: $last_modified")
 	response_code=$(echo "$response" | head -n 1 | sed 's/^[^ ]* //')
 	# echos the response, sed only the headers, grep the header we want, and extract the contents with sed once more. Beautiful!
@@ -361,7 +361,7 @@ function download_from_json_feed() {
 
 	output_file="$3"
 
-	download_url="$(curl -s -o - "$1" | jq -r "$2")" \
+	download_url="$(curl -s -H "User-Agent: $USER_AGENT" -o - "$1" | jq -r "$2")" \
 			|| die "Error while retrieving url of type $2 from feed $1"
 
 	if [[ "$download_url" == "" || "$download_url" == "null" ]]; then
@@ -386,10 +386,10 @@ function latest_hangar_release_version() {
 	local response_code
 	local response_body
 	if [[ "$#" == "1" ]]; then
-		response=$(curl -X GET "https://hangar.papermc.io/api/v1/projects/$project/latestrelease" -i -H 'accept: text/plain')
+		response=$(curl -X GET -H "User-Agent: $USER_AGENT" "https://hangar.papermc.io/api/v1/projects/$project/latestrelease" -i -H 'accept: text/plain')
 	elif [[ "$#" == "2" ]]; then
 		channel=$2
-		response=$(curl -X GET "https://hangar.papermc.io/api/v1/projects/$project/latest?channel=$channel" -i -H 'accept: text/plain')
+		response=$(curl -X GET -H "User-Agent: $USER_AGENT" "https://hangar.papermc.io/api/v1/projects/$project/latest?channel=$channel" -i -H 'accept: text/plain')
 	else
 		die "Incorrect argument count for fetching hangar release version for project $project: $#"
 	fi
@@ -439,7 +439,7 @@ function download_from_modrinth() {
 	if [[ "$#" -lt 3 ]]; then
 		die "Not enough args for download_from_modrinth to download $2"
 	fi
-	feed=$(curl -s -o - "https://api.modrinth.com/v2/project/$1/version") \
+	feed=$(curl -s -H "User-Agent: $USER_AGENT" -o - "https://api.modrinth.com/v2/project/$1/version") \
 		|| die "Error while fetching modrinth api for $1"
 	# selects the first element of the list of versions
 	jq_filter="first(.[]"
