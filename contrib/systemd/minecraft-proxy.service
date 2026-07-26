@@ -11,7 +11,7 @@ RuntimeDirectory=minecraft-proxy
 
 Type=forking
 ExecStart=/bin/bash -c 'exec tmux -S /run/minecraft-proxy/tmux set -g default-shell /bin/bash ";" new-session -d "/var/lib/minecraft/deploy/contrib/server_loop.py ./start.sh"'
-ExecStop=/bin/bash -c 'exec tmux -S /run/minecraft-proxy/tmux kill-server'
+ExecStop=/bin/bash -c 'tmux -S /run/minecraft-proxy/tmux kill-server 2>/dev/null || true'
 
 PrivateTmp=true
 PrivateDevices=true

@@ -59,7 +59,7 @@ def main():
 
         end_time = time.time()
         if end_time - start_time < 2:
-            print("Server exited abnormally fast, aborting!")
+            print(f"Server exited abnormally fast (in {end_time - start_time:.2f}s), aborting!")
             shared_data["stop"] = True
             return
 
