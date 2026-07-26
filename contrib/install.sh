@@ -21,7 +21,7 @@ function install_file() {
 
 for name in server proxy; do
 	install_file "systemd/minecraft-$name.service" \
-		"/lib/systemd/system/minecraft-$name.service" \
+		"/etc/systemd/system/minecraft-$name.service" \
 		root: 644
 done
 
