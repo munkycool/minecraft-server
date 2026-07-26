@@ -12,6 +12,14 @@ def exit_usage():
     sys.exit(1)
 
 def main():
+    # Redirect stdout and stderr to server_loop.log in the working directory
+    try:
+        log_file = open("server_loop.log", "a", buffering=1)
+        os.dup2(log_file.fileno(), sys.stdout.fileno())
+        os.dup2(log_file.fileno(), sys.stderr.fileno())
+    except Exception:
+        pass
+
     if len(sys.argv) < 2:
         exit_usage()
 
