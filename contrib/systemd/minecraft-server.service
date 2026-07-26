@@ -9,8 +9,8 @@ Group=minecraft
 RuntimeDirectory=minecraft-server
 
 Type=forking
-ExecStart=tmux -S /run/minecraft-server/tmux set -g default-shell /bin/bash ";" new-session -d "/var/lib/minecraft/deploy/contrib/server_loop.py --block start.block ./start.sh :POST: ./backup.sh"
-ExecStop=tmux -S /run/minecraft-server/tmux kill-server
+ExecStart=/usr/bin/tmux -S /run/minecraft-server/tmux set -g default-shell /bin/bash ";" new-session -d "/var/lib/minecraft/deploy/contrib/server_loop.py --block start.block ./start.sh :POST: ./backup.sh"
+ExecStop=/usr/bin/tmux -S /run/minecraft-server/tmux kill-server
 
 PrivateTmp=true
 PrivateDevices=true
