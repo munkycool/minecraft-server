@@ -10,7 +10,7 @@ WorkingDirectory=/var/lib/minecraft/deploy/server
 RuntimeDirectory=minecraft-server
 
 Type=forking
-ExecStart=/bin/bash -c 'exec tmux -S /run/minecraft-server/tmux set -g default-shell /bin/bash ";" new-session -d "/var/lib/minecraft/deploy/contrib/server_loop.py --block start.block ./start.sh :POST: ./backup.sh"'
+ExecStart=/bin/bash -c 'exec tmux -S /run/minecraft-server/tmux set -g default-shell /bin/bash ";" new-session -d "/usr/bin/python3 /var/lib/minecraft/deploy/contrib/server_loop.py --block start.block ./start.sh :POST: ./backup.sh"'
 ExecStop=/bin/bash -c 'tmux -S /run/minecraft-server/tmux kill-server 2>/dev/null || true'
 
 PrivateTmp=true
